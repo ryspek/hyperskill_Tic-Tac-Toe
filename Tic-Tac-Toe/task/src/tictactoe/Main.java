@@ -17,7 +17,7 @@ public class Main {
         drawField(field);
         while (!checkForWinner(field, X) && !checkForWinner(field, O)) {
             if (isDraw(field)) {
-                System.out.println("draw");
+                System.out.println("Draw");
                 break;
             }
             promptMove(field, scanner);
