@@ -4,28 +4,39 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static final char X = 'X';
+    private static final char O = 'O';
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter cells: ");
-        String cells = scanner.nextLine();
-
-        char[][] field = prepareField(cells);
-        drawField(field);
-        promptMove(field, scanner);
-        drawField(field);
+        playGame(scanner);
     }
 
-    private static char[][] prepareField(String cells) {
-        int idx = 0;
+    private static void playGame(Scanner scanner) {
+        char[][] field = prepareField();
+        drawField(field);
+        while (!checkForWinner(field, X) && !checkForWinner(field, O)) {
+            if (isDraw(field)) {
+                System.out.println("draw");
+                break;
+            }
+            promptMove(field, scanner);
+        }
+        if (checkForWinner(field, X)) {
+            System.out.println("X wins");
+            return;
+        }
+        if (checkForWinner(field, O)) {
+            System.out.println("O wins");
+            return;
+        }
+    }
+
+    private static char[][] prepareField() {
         char[][] field = new char[3][3];
         for(int i = 0; i < field.length; i++) {
             for(int j = 0; j < field[0].length; j++) {
-                if ('X' == cells.charAt(idx) || 'O' == cells.charAt(idx)) {
-                    field[i][j] = cells.charAt(idx);
-                } else {
-                    field[i][j] = ' ';
-                }
-                idx++;
+                field[i][j] = ' ';
             }
         }
         return field;
@@ -71,6 +82,7 @@ public class Main {
             return;
         }
         setSymbol(field, rowNum, colNum);
+        drawField(field);
     }
 
     private static boolean isNumber(char ch) {
@@ -115,19 +127,21 @@ public class Main {
         return count;
     }
 
-    private static boolean checkWinner(char ch, String cells) {
-        int rows = 3;
-        int cols = 3;
-        int cellIdx = 0;
+    private static boolean isDraw(char[][] field) {
+        return 9 == (countChar(X, field) + countChar(O, field));
+    }
+
+    private static boolean checkForWinner(char[][] field, char ch) {
+        int rows = field.length;
+        int cols = field[0].length;
 
         // checking rows
         for (int i = 0; i < rows; i++) {
             int rowCount = 0;
             for (int j = 0; j < cols; j++) {
-                if (cells.charAt(cellIdx) == ch) {
+                if (field[i][j] == ch) {
                     rowCount++;
                 }
-                cellIdx++;
             }
             if (rowCount == rows) {
                 return true;
@@ -135,14 +149,11 @@ public class Main {
         }
 
         // checking cols
-        cellIdx = 0;
         for (int i = 0; i < cols; i++) {
-            cellIdx = i;
             int colCount = 0;
             for (int j = 0; j < rows; j++) {
-                if (cells.charAt(cellIdx) == ch) {
+                if (field[j][i] == ch) {
                     colCount++;
-                    cellIdx += 3;
                 }
             }
             if (colCount == cols) {
@@ -151,8 +162,8 @@ public class Main {
         }
 
         // checking diagonals
-        if (cells.charAt(0) == ch && cells.charAt(4) == ch && cells.charAt(8) == ch
-            || cells.charAt(2) == ch && cells.charAt(4) == ch && cells.charAt(6) == ch) {
+        if ((field[0][0] == ch && field[1][1] == ch && field[2][2] == ch)
+            || (field[2][0] == ch && field[1][1] == ch && field[0][2] == ch)) {
             return true;
         }
         return false;

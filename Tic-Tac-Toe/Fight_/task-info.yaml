@@ -1,104 +1,6 @@
 type: edu
 custom_name: Fight!
 files:
-- name: src/tictactoe/Main.java
-  visible: true
-  text: |
-    package tictactoe;
-
-    import java.util.Scanner;
-
-    public class Main {
-        public static void main(String[] args) {
-            Scanner scanner = new Scanner(System.in);
-            String cells = scanner.next();
-            System.out.println("Enter cells: " + cells);
-            System.out.println("---------");
-            int rows = 3;
-            int cols = 3;
-            int cellIdx = 0;
-            for (int i = 0; i < rows; i++) {
-                System.out.print("| ");
-                for (int j = 0; j < cols; j++) {
-                    System.out.print(cells.charAt(cellIdx) + " ");
-                    cellIdx++;
-                }
-                System.out.println("|");
-            }
-            System.out.println("---------");
-
-            int xCount = countChar('X', cells);
-            int oCount = countChar('O', cells);
-            boolean xWins = checkWinner('X', cells);
-            boolean oWins = checkWinner('O', cells);
-
-            if (xWins && oWins || Math.abs(xCount - oCount) > 1) {
-                System.out.println("Impossible");
-            } else if (xWins) {
-                System.out.println("X wins");
-            } else if (oWins) {
-                System.out.println("O wins");
-            } else if ((xCount + oCount) == 9) {
-                System.out.println("Draw");
-            } else {
-                System.out.println("Game not finished");
-            }
-        }
-
-        private static int countChar(char ch, String cells) {
-            int count = 0;
-            for(char c : cells.toCharArray()) {
-                if (c == ch) {
-                    count++;
-                }
-            }
-            return count;
-        }
-
-        private static boolean checkWinner(char ch, String cells) {
-            int rows = 3;
-            int cols = 3;
-            int cellIdx = 0;
-
-            // checking rows
-            for (int i = 0; i < rows; i++) {
-                int rowCount = 0;
-                for (int j = 0; j < cols; j++) {
-                    if (cells.charAt(cellIdx) == ch) {
-                        rowCount++;
-                    }
-                    cellIdx++;
-                }
-                if (rowCount == rows) {
-                    return true;
-                }
-            }
-
-            // checking cols
-            cellIdx = 0;
-            for (int i = 0; i < cols; i++) {
-                cellIdx = i;
-                int colCount = 0;
-                for (int j = 0; j < rows; j++) {
-                    if (cells.charAt(cellIdx) == ch) {
-                        colCount++;
-                        cellIdx += 3;
-                    }
-                }
-                if (colCount == cols) {
-                    return true;
-                }
-            }
-
-            // checking diagonals
-            if (cells.charAt(0) == ch && cells.charAt(4) == ch && cells.charAt(8) == ch
-                || cells.charAt(2) == ch && cells.charAt(4) == ch && cells.charAt(6) == ch) {
-                return true;
-            }
-            return false;
-        }
-    }
-  learner_created: false
 - name: test/TicTacToeTest.java
   visible: false
   text: |
@@ -539,6 +441,104 @@ files:
             return CheckResult.wrong(
                 "Your last field contains unfinished game, the game should be finished!"
             );
+        }
+    }
+  learner_created: false
+- name: src/tictactoe/Main.java
+  visible: true
+  text: |
+    package tictactoe;
+
+    import java.util.Scanner;
+
+    public class Main {
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            String cells = scanner.next();
+            System.out.println("Enter cells: " + cells);
+            System.out.println("---------");
+            int rows = 3;
+            int cols = 3;
+            int cellIdx = 0;
+            for (int i = 0; i < rows; i++) {
+                System.out.print("| ");
+                for (int j = 0; j < cols; j++) {
+                    System.out.print(cells.charAt(cellIdx) + " ");
+                    cellIdx++;
+                }
+                System.out.println("|");
+            }
+            System.out.println("---------");
+
+            int xCount = countChar('X', cells);
+            int oCount = countChar('O', cells);
+            boolean xWins = checkWinner('X', cells);
+            boolean oWins = checkWinner('O', cells);
+
+            if (xWins && oWins || Math.abs(xCount - oCount) > 1) {
+                System.out.println("Impossible");
+            } else if (xWins) {
+                System.out.println("X wins");
+            } else if (oWins) {
+                System.out.println("O wins");
+            } else if ((xCount + oCount) == 9) {
+                System.out.println("Draw");
+            } else {
+                System.out.println("Game not finished");
+            }
+        }
+
+        private static int countChar(char ch, String cells) {
+            int count = 0;
+            for(char c : cells.toCharArray()) {
+                if (c == ch) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        private static boolean checkWinner(char ch, String cells) {
+            int rows = 3;
+            int cols = 3;
+            int cellIdx = 0;
+
+            // checking rows
+            for (int i = 0; i < rows; i++) {
+                int rowCount = 0;
+                for (int j = 0; j < cols; j++) {
+                    if (cells.charAt(cellIdx) == ch) {
+                        rowCount++;
+                    }
+                    cellIdx++;
+                }
+                if (rowCount == rows) {
+                    return true;
+                }
+            }
+
+            // checking cols
+            cellIdx = 0;
+            for (int i = 0; i < cols; i++) {
+                cellIdx = i;
+                int colCount = 0;
+                for (int j = 0; j < rows; j++) {
+                    if (cells.charAt(cellIdx) == ch) {
+                        colCount++;
+                        cellIdx += 3;
+                    }
+                }
+                if (colCount == cols) {
+                    return true;
+                }
+            }
+
+            // checking diagonals
+            if (cells.charAt(0) == ch && cells.charAt(4) == ch && cells.charAt(8) == ch
+                || cells.charAt(2) == ch && cells.charAt(4) == ch && cells.charAt(6) == ch) {
+                return true;
+            }
+            return false;
         }
     }
   learner_created: false
